@@ -165,4 +165,4 @@ https://github.com/Sachinranjan1905
 # ⭐ Support
 
 If you like this project, please **star the repository** ⭐# AI-Crop-Recommendation-System
-Sachin1905@# AI-Crop-Recommendation-System
+
