@@ -1,168 +1,147 @@
-# 🌱 AI Crop Recommendation System
+# 🌾 AI Crop Recommendation System
 
-An AI-powered Crop Recommendation System built using **Machine Learning (Random Forest)** and **Streamlit**.  
-The system predicts the most suitable crop based on **soil nutrients and environmental conditions**.
-
----
-
-# 🚀 Features
-
-- Machine Learning model using **Random Forest**
-- Predict best crop using:
-  - Nitrogen (N)
-  - Phosphorus (P)
-  - Potassium (K)
-  - Temperature
-  - Humidity
-  - Soil pH
-  - Rainfall
-- Data Visualization
-- Confusion Matrix
-- Classification Report
-- Interactive **Streamlit Web App**
+A Machine Learning based web application that recommends the most suitable crop to grow based on soil nutrients and environmental conditions.
 
 ---
 
-# 🧠 Machine Learning Model
+## 🚀 Project Overview
 
-Algorithm Used:
+The **AI Crop Recommendation System** helps farmers and agriculture enthusiasts determine the best crop to cultivate using machine learning.
 
-- **Random Forest Classifier**
+The model analyzes key agricultural parameters such as:
 
-Why Random Forest?
+* Nitrogen (N)
+* Phosphorus (P)
+* Potassium (K)
+* Temperature
+* Humidity
+* pH level
+* Rainfall
 
-- High accuracy
-- Handles large datasets
-- Works well with structured agricultural data
+Based on these inputs, the system predicts the most suitable crop.
 
 ---
 
-# 📂 Project Structure
+## 🧠 Machine Learning Model
+
+* Algorithm Used: **Random Forest Classifier**
+* Dataset: Crop Recommendation Dataset
+* Frameworks: **Scikit-learn, Pandas, NumPy**
+
+---
+
+## 💻 Tech Stack
+
+* Python
+* Scikit-learn
+* Streamlit
+* Pandas
+* NumPy
+* Matplotlib
+* Seaborn
+
+---
+
+## 📂 Project Structure
+
+```
 AI-Crop-Recommendation-System
 │
 ├── app
-│ └── app.py
+│   └── app.py
 │
 ├── data
-│ └── Crop_recommendation.csv
-│
-├── model
-│ └── crop_model.pkl
+│   └── Crop_recommendation.csv
 │
 ├── outputs
-│ ├── confusion_matrix.png
-│ ├── data_distribution.png
-│ └── classification_report.txt
+│   ├── classification_report.txt
+│   ├── confusion_matrix.png
+│   ├── data_distribution.png
+│   └── feature_importance.png
 │
 ├── main.py
 ├── requirements.txt
-└── README.md
+├── README.md
+└── .gitignore
+```
 
 ---
 
-# 📊 Dataset Features
-
-| Feature | Description |
-|------|-------------|
-| N | Nitrogen content in soil |
-| P | Phosphorus content in soil |
-| K | Potassium content in soil |
-| temperature | Temperature (°C) |
-| humidity | Humidity (%) |
-| ph | Soil pH |
-| rainfall | Rainfall (mm) |
-
-Target:
-Crop Label
-
----
-
-# ⚙️ Installation
+## ⚙️ Installation
 
 Clone the repository
+
+```
 git clone https://github.com/Sachinranjan1905/AI-Crop-Recommendation-System.git
+```
 
-Move into the folder
+Move into the project folder
 
+```
 cd AI-Crop-Recommendation-System
+```
 
 Install dependencies
 
+```
+pip install -r requirements.txt
+```
 
 ---
 
-# ▶️ Run Model Training
+## ▶️ Run the Project
+
+Train the model
+
+```
 python main.py
+```
 
-This will:
+Run the Streamlit web application
 
-- Train the ML model
-- Generate graphs
-- Save model
-- Save confusion matrix
-
----
-
-# 🌐 Run Web App
+```
 streamlit run app/app.py
-
-Open browser:
-http://localhost:8501
+```
 
 ---
 
-# 📈 Model Output
+## 📊 Model Outputs
 
 The project generates:
 
-- Data Distribution Graph
-- Confusion Matrix
-- Classification Report
-- Saved ML Model
+* Classification Report
+* Confusion Matrix
+* Feature Importance Graph
+* Data Distribution Graph
+
+These results are stored inside the **outputs/** folder.
 
 ---
 
-# 🖥 Example Prediction
+## 🎯 Features
 
-Input:
-N = 36
-P = 58
-K = 25
-Temperature = 28.6
-Humidity = 59.3
-pH = 8.3
-Rainfall = 36.9
-
-Output:
-Recommended Crop: Rice
+✔ Crop prediction using machine learning
+✔ Interactive web interface using Streamlit
+✔ Data visualization for better insights
+✔ Easy to use and lightweight
 
 ---
 
-# 🛠 Tech Stack
+## 📌 Future Improvements
 
-- Python
-- Pandas
-- NumPy
-- Scikit-Learn
-- Matplotlib
-- Seaborn
-- Streamlit
+* Deploy the application online
+* Add more crop datasets
+* Integrate weather APIs
+* Mobile-friendly UI
 
 ---
 
-# 👨‍💻 Author
+## 👨‍💻 Author
 
 **Sachin Ranjan**
 
-B.Tech CSE  
-Quantum University  
+B.Tech CSE
+Quantum University, Roorkee
 
-GitHub  
+GitHub:
 https://github.com/Sachinranjan1905
-
----
-
-# ⭐ Support
-
-If you like this project, please **star the repository** ⭐# AI-Crop-Recommendation-System
-
