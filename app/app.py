@@ -1,4 +1,3 @@
-
 import streamlit as st
 import joblib
 import numpy as np
@@ -21,30 +20,113 @@ st.set_page_config(
 # ---------------------------------------------------
 # RESPONSIVE CSS
 # ---------------------------------------------------
+# ---------------------------------------------------
+# RESPONSIVE CSS (Times New Roman Theme)
+# ---------------------------------------------------
 st.markdown("""
 <style>
 
-.stApp{
-background: linear-gradient(120deg,#e6f9e6,#ffffff);
+/* Font */
+
+html, body, [class*="css"] {
+    font-family: "Times New Roman", Times, serif !important;
+    color:#1f2937 !important;
 }
+
+/* Background */
+
+.stApp{
+background: linear-gradient(135deg,#e8f5e9,#c8e6c9);
+}
+
+/* Titles */
 
 h1{
-color:#2E8B57;
+color:#1b5e20 !important;
+font-weight:700;
+font-size:42px;
 }
 
-.stButton>button{
-background-color:#2E8B57;
-color:white;
-border-radius:10px;
-height:3em;
-width:100%;
-font-size:18px;
+h2,h3{
+color:#2e7d32 !important;
 }
+
+/* Paragraph + markdown text */
+
+p, span, label, div{
+font-size:18px;
+color:#1f2937 !important;
+}
+
+/* Markdown fix */
+
+[data-testid="stMarkdownContainer"]{
+color:#1f2937 !important;
+}
+
+/* Buttons */
+
+.stButton>button{
+background:#2e7d32;
+color:white !important;
+border:none;
+border-radius:12px;
+height:3em;
+font-size:18px;
+font-weight:600;
+}
+
+.stButton>button:hover{
+background:#1b5e20;
+}
+
+/* Card container */
+
+.block-container{
+padding-top:2rem;
+background:white;
+border-radius:15px;
+padding:25px;
+box-shadow:0 4px 15px rgba(0,0,0,0.1);
+}
+
+/* INPUT FIX */
+
+input, textarea{
+color:#000000 !important;
+background-color:#ffffff !important;
+}
+
+/* Number input */
+
+.stNumberInput input{
+color:#000000 !important;
+background-color:#ffffff !important;
+}
+
+/* Slider label */
+
+.stSlider label{
+color:#000000 !important;
+}
+
+/* Tabs */
+
+.stTabs [data-baseweb="tab"]{
+font-size:18px;
+color:#1b5e20 !important;
+}
+
+/* Mobile */
 
 @media (max-width:768px){
 
 h1{
-font-size:28px;
+font-size:30px;
+}
+
+p{
+font-size:16px;
 }
 
 }
@@ -52,11 +134,14 @@ font-size:28px;
 </style>
 """, unsafe_allow_html=True)
 
+
 # ---------------------------------------------------
 # LOTTIE FUNCTION
 # ---------------------------------------------------
 def load_lottie(url):
     r = requests.get(url)
+    if r.status_code != 200:
+        return None
     return r.json()
 
 lottie_ai = load_lottie(
@@ -64,12 +149,13 @@ lottie_ai = load_lottie(
 )
 
 # ---------------------------------------------------
-# PATHS
+# PROJECT ROOT PATH
 # ---------------------------------------------------
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 model_dir = os.path.join(BASE_DIR,"model")
 model_path = os.path.join(model_dir,"crop_model.pkl")
+
 data_path = os.path.join(BASE_DIR,"data","Crop_recommendation.csv")
 
 if not os.path.exists(model_dir):
@@ -85,7 +171,8 @@ if not os.path.exists(model_path):
     X = data.drop("label",axis=1)
     y = data["label"]
 
-    model = RandomForestClassifier()
+    model = RandomForestClassifier(n_estimators=200)
+
     model.fit(X,y)
 
     joblib.dump(model,model_path)
@@ -99,17 +186,24 @@ else:
 col1,col2 = st.columns([1,1])
 
 with col1:
+
     st.title("🌱 AI Crop Recommendation System")
+
     st.write(
-    "Smart Agriculture using Machine Learning. "
-    "Enter soil and weather conditions to get crop recommendation."
+        "Smart Agriculture powered by Machine Learning. This system evaluates soil nutrients "
+        "(N, P, K), weather conditions such as temperature, humidity, and rainfall, along with "
+        "soil pH levels to recommend the most suitable crop for a given environment. "
+        "The goal is to assist farmers in selecting the right crop at the right time, "
+        "improving productivity, reducing risk, and promoting sustainable agriculture."
     )
 
 with col2:
-    st_lottie(lottie_ai,height=220)
+
+    if lottie_ai:
+        st_lottie(lottie_ai,height=220)
 
 st.divider()
-
+st.info("🌾 AI helps farmers choose the best crop based on soil and weather conditions.")
 # ---------------------------------------------------
 # TABS
 # ---------------------------------------------------
@@ -118,6 +212,7 @@ tab1,tab2,tab3 = st.tabs(["🌾 Prediction","📊 Model Insights","ℹ️ About"
 # ===================================================
 # PREDICTION TAB
 # ===================================================
+
 with tab1:
 
     st.subheader("Enter Soil and Weather Parameters")
@@ -162,16 +257,52 @@ with tab1:
         features = np.array([[N,P,K,temperature,humidity,ph,rainfall]])
 
         prediction = model.predict(features)
+        probabilities = model.predict_proba(features)
 
         crop = prediction[0]
+        confidence = np.max(probabilities)*100
 
-        st.success(f"🌾 Recommended Crop: **{crop}**")
+        # AI RESULT CARD
+        st.markdown(f"""
+        <div style="
+        background:#ecfdf5;
+        padding:30px;
+        border-radius:15px;
+        border-left:8px solid #16a34a;
+        box-shadow:0px 4px 10px rgba(0,0,0,0.1);
+        ">
 
+        <h2 style="color:#065f46;">🌾 Recommended Crop</h2>
+
+        <h1 style="color:#15803d;">{crop.upper()}</h1>
+
+        <p style="font-size:20px;"><b>📊 Confidence:</b> {confidence:.2f}%</p>
+
+        </div>
+        """, unsafe_allow_html=True)
+
+        # Crop image
         if crop in crop_images:
             st.image(crop_images[crop],width=350)
 
+        # Fertilizer recommendation card
         if crop in fertilizer_data:
-            st.info(f"🌱 Fertilizer Recommendation: {fertilizer_data[crop]}")
+
+            st.markdown(f"""
+            <div style="
+            background:#f0fdf4;
+            padding:20px;
+            border-radius:12px;
+            border-left:6px solid #22c55e;
+            margin-top:15px;
+            ">
+
+            <h3>🌱 Fertilizer Recommendation</h3>
+
+            <p style="font-size:18px;">{fertilizer_data[crop]}</p>
+
+            </div>
+            """, unsafe_allow_html=True)
 
 # ===================================================
 # MODEL INSIGHTS
@@ -185,10 +316,13 @@ with tab2:
     importance = model.feature_importances_
 
     fig = px.bar(
+
     x=features,
     y=importance,
     labels={"x":"Features","y":"Importance"},
-    title="Feature Importance in Crop Prediction"
+    title="Feature Importance in Crop Prediction",
+    color=importance
+
     )
 
     st.plotly_chart(fig,use_container_width=True)
@@ -201,32 +335,35 @@ with tab3:
     st.subheader("About This Project")
 
     st.write("""
-This project uses **Machine Learning** to recommend crops based on
-soil nutrients and environmental conditions.
+
+This project uses **Machine Learning** to recommend crops based on soil nutrients and environmental conditions.
 
 ### Technologies Used
-- Python
-- Scikit-learn
-- Pandas
-- Streamlit
-- Plotly
+
+- Python  
+- Scikit-learn  
+- Pandas  
+- Streamlit  
+- Plotly  
 
 ### Model
+
 Random Forest Classifier
 
 ### Input Features
-- Nitrogen
-- Phosphorus
-- Potassium
-- Temperature
-- Humidity
-- pH
-- Rainfall
 
-The system helps farmers make **data driven crop decisions**.
+- Nitrogen  
+- Phosphorus  
+- Potassium  
+- Temperature  
+- Humidity  
+- pH  
+- Rainfall  
+
+This system helps farmers make **data-driven crop decisions**.
+
 """)
 
 st.divider()
 
 st.caption("Developed by Sachin Ranjan 🚀")
-

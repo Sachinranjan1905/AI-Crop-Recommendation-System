@@ -2,6 +2,9 @@ streamlit
 pandas
 numpy
 scikit-learn
+plotly
+joblib
+streamlit-lottie
+requests
 matplotlib
 seaborn
-joblib
